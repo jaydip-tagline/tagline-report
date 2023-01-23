@@ -1,5 +1,11 @@
-input.ng-invalid.ng-touched,
-select.ng-invalid.ng-touched{
-  border: 1px solid red;
-  box-shadow: 0 0 13px inset rgba(255,0,0,0.09);  
+.container{
+  width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.btn{
+  background-color: #DA6427;
+    color: #fff;
 }

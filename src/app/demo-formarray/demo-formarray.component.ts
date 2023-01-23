@@ -15,17 +15,22 @@ import {
 export class DemoFormarrayComponent implements OnInit {
   public userReport!: FormGroup;
   public skillData!: string;
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit(): void {
+  public errorMsg: string = 'Please fill this first';
+  public taskDataError!: string;
+  public progressDataError!: string;
+  public pendingDataError!: string;
+  public isInvalid!: boolean;
+  constructor(private fb: FormBuilder) {
     this.userReport = this.fb.group({
       clientName: [''],
       projectName: [''],
       taskData: this.fb.array([new FormControl('', [Validators.required])]),
       progressData: this.fb.array([new FormControl('', [Validators.required])]),
-      skills: this.fb.array([new FormControl('', [Validators.required])]),
+      pendingData: this.fb.array([new FormControl('', [Validators.required])]),
     });
   }
+
+  ngOnInit(): void {}
   get formControls() {
     return this.userReport.controls;
   }
@@ -38,33 +43,44 @@ export class DemoFormarrayComponent implements OnInit {
     return this.userReport.get('progressData') as FormArray;
   }
 
-  get skills(): FormArray {
-    return this.userReport.get('skills') as FormArray;
+  get pendingData() {
+    return this.userReport.get('pendingData') as FormArray;
   }
 
-  newSkill(): FormGroup {
-    return this.fb.group({
-      skill: ['', [Validators.required]],
-    });
-  }
-  addData(i: number) {
-    this.taskData.push(new FormControl(''));
-    console.log(this.taskData.controls[i].value);
+  addTaskdata() {
+    console.log('formControls:>> ', this.taskData.value);
+    if (this.formControls['taskData'].valid) {
+      this.taskData.push(this.formControl());
+      this.isInvalid = false;
+    } else {
+      this.taskDataError = this.errorMsg;
+      this.isInvalid = true;
+    }
   }
   addProgresstask() {
-    this.progressData.push(new FormControl(''));
+    if (this.formControls['progressData'].valid) {
+      this.progressData.push(this.formControl());
+      this.isInvalid = false;
+    } else {
+      this.progressDataError = this.errorMsg;
+      this.isInvalid = true;
+    }
   }
-  addSkills() {
-    this.skills.push(this.newSkill());
-  }
-  removeData(i: number) {
-    this.taskData.removeAt(i);
+  addPendingtask() {
+    if (this.formControls['pendingData'].valid) {
+      this.pendingData.push(this.formControl());
+      this.isInvalid = false;
+    } else {
+      this.pendingDataError = this.errorMsg;
+      this.isInvalid = true;
+    }
   }
 
-  removeProgressTask(i: number) {
-    this.progressData.removeAt(i);
+  removeField(i: number, arr: any) {
+    arr.removeAt(i);
   }
-  removeSkill(i: number) {
-    this.skills.removeAt(i);
+
+  formControl() {
+    return this.fb.control('', [Validators.required]);
   }
 }

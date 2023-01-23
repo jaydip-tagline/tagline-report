@@ -12,7 +12,7 @@
   <h1 class="text-center py-2 fw-bold">I'm here to write daily update.</h1>
 </div>
 <div class="reportForm row">
-  <div class="col-lg-6 p-5">
+  <div class="col-md-7 p-5">
     <div class="row fs-5 ps-5">
       <form [formGroup]="userReport" class="px-5">
         <div class="form-row row mb-3">
@@ -50,16 +50,28 @@
                   [formControlName]="i"
                   minlength="1"
                 />
-                <button type="button" class="btn me-3" (click)="removeData(i)">
+                <button
+                  type="button"
+                  class="btn me-3"
+                  (click)="removeField(i, taskData)"
+                  [ngStyle]="{
+                    display: taskData.controls.length >= 2 ? 'inline' : 'none'
+                  }"
+                >
                   <i class="fa-solid fa-trash"></i>
                 </button>
-                <button type="button" class="btn" (click)="addData(i)">
+                <button type="button" class="btn" (click)="addTaskdata()">
                   <i class="fa-solid fa-plus"></i>
                 </button>
               </div>
+              <span
+                class="fs-6 text-danger"
+                *ngIf="task.invalid && this.isInvalid == true"
+                >{{ taskDataError }}</span
+              >
             </div>
           </div>
-          <div class="form-group col-md-10 mb-3" formArrayName="taskData">
+          <div class="form-group col-md-10 mb-3" formArrayName="progressData">
             <label for="progressData" class="fs-6"
               >List of In-Progress Tasks:</label
             >
@@ -78,7 +90,11 @@
                 <button
                   type="button"
                   class="btn me-3"
-                  (click)="removeProgressTask(i)"
+                  (click)="removeField(i, progressData)"
+                  [ngStyle]="{
+                    display:
+                      progressData.controls.length >= 2 ? 'inline' : 'none'
+                  }"
                 >
                   <i class="fa-solid fa-trash"></i>
                 </button>
@@ -86,10 +102,67 @@
                   <i class="fa-solid fa-plus"></i>
                 </button>
               </div>
+              <span
+                class="fs-6 text-danger"
+                *ngIf="task.invalid && this.isInvalid == true"
+                >{{ progressDataError }}</span
+              >
+            </div>
+          </div>
+          <div class="form-group col-md-10 mb-3" formArrayName="pendingData">
+            <label for="pendingData" class="fs-6">List of Pending Tasks:</label>
+            <div
+              *ngFor="let task of pendingData.controls; let i = index"
+              class="col-12 mt-2"
+            >
+              <div class="d-flex justify-content-center">
+                <input
+                  type="text"
+                  class="form-control me-3"
+                  placeholder="Pending Task"
+                  [formControlName]="i"
+                  minlength="1"
+                />
+                <button
+                  type="button"
+                  class="btn me-3"
+                  (click)="removeField(i, pendingData)"
+                  [ngStyle]="{
+                    display:
+                      pendingData.controls.length >= 2 ? 'inline' : 'none'
+                  }"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+                <button type="button" class="btn" (click)="addPendingtask()">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
+              <span
+                class="fs-6 text-danger"
+                *ngIf="task.invalid && this.isInvalid == true"
+                >{{ pendingDataError }}</span
+              >
             </div>
           </div>
         </div>
       </form>
+    </div>
+  </div>
+  <div class="col-md-5 p-5">
+    <div *ngIf="formControls['clientName'].dirty">
+      <p>Hi, {{ formControls["clientName"].value }}</p>
+    </div>
+    <div *ngIf="formControls['projectName'].dirty">
+      <p>
+        Following are the updates for {{ formControls["projectName"].value }}
+      </p>
+    </div>
+    <div *ngIf="formControls['taskData'].dirty">
+      <h5>Complete Task</h5>
+      <div *ngFor="let data of taskData.value; let i = index">
+        {{ taskData.value[i] }}
+      </div>
     </div>
   </div>
 </div>
