@@ -11,7 +11,7 @@
 <div class="box pt-2">
   <h1 class="text-center py-2 fw-bold">I'm here to write daily update.</h1>
 </div>
-<div class="reportForm row">
+<div class="row">
   <div class="col-md-7 p-5">
     <div class="row fs-5 ps-5">
       <form [formGroup]="userReport" class="px-5">
@@ -60,7 +60,7 @@
                 >
                   <i class="fa-solid fa-trash"></i>
                 </button>
-                <button type="button" class="btn" (click)="addTaskdata()">
+                <button type="button" class="btn" (click)="addData('taskData')">
                   <i class="fa-solid fa-plus"></i>
                 </button>
               </div>
@@ -98,7 +98,11 @@
                 >
                   <i class="fa-solid fa-trash"></i>
                 </button>
-                <button type="button" class="btn" (click)="addProgresstask()">
+                <button
+                  type="button"
+                  class="btn"
+                  (click)="addData('progressData')"
+                >
                   <i class="fa-solid fa-plus"></i>
                 </button>
               </div>
@@ -134,7 +138,11 @@
                 >
                   <i class="fa-solid fa-trash"></i>
                 </button>
-                <button type="button" class="btn" (click)="addPendingtask()">
+                <button
+                  type="button"
+                  class="btn"
+                  (click)="addData('pendingData')"
+                >
                   <i class="fa-solid fa-plus"></i>
                 </button>
               </div>
@@ -145,23 +153,148 @@
               >
             </div>
           </div>
+          <div class="form-group col-md-10 mb-3" formArrayName="queries">
+            <label for="queries" class="fs-6">Queries:</label>
+            <div
+              *ngFor="let query of queries.controls; let i = index"
+              class="col-12 mt-2"
+            >
+              <div class="d-flex justify-content-center">
+                <input
+                  type="text"
+                  class="form-control me-3"
+                  placeholder="Queries"
+                  [formControlName]="i"
+                  minlength="1"
+                />
+                <button
+                  type="button"
+                  class="btn me-3"
+                  (click)="removeField(i, queries)"
+                  [ngStyle]="{
+                    display: queries.controls.length >= 2 ? 'inline' : 'none'
+                  }"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+                <button type="button" class="btn" (click)="addData('queries')">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
+              <span
+                class="fs-6 text-danger"
+                *ngIf="query.invalid && this.isInvalid == true"
+              >
+                {{ queryError }}
+              </span>
+            </div>
+          </div>
+          <div class="form-group col-md-10 mb-3" formArrayName="notes">
+            <label for="notes" class="fs-6">Notes:</label>
+            <div
+              *ngFor="let note of notes.controls; let i = index"
+              class="col-12 mt-2"
+            >
+              <div class="d-flex justify-content-center">
+                <input
+                  class="form-control me-3"
+                  type="text"
+                  placeholder="Notes"
+                  [formControlName]="i"
+                  minlength="1"
+                />
+                <button
+                  class="btn me-3"
+                  (click)="removeField(i, notes)"
+                  [ngStyle]="{ display: notes.length >= 2 ? 'inline' : 'none' }"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+                <button class="btn" (click)="addData('notes')">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
+            </div>
+            <span
+              class="fs-6 text-danger"
+              *ngIf="formControls['notes'].invalid && this.isInvalid == true"
+            >
+              {{ noteError }}
+            </span>
+          </div>
+          <div class="form-group col-md-10">
+            <label for="name" class="fs-6">Your Name</label>
+            <input
+              type="text"
+              class="form-control me-3 mt-2"
+              placeholder="Enter Your Name"
+              formControlName="name"
+            />
+          </div>
         </div>
       </form>
     </div>
   </div>
   <div class="col-md-5 p-5">
     <div *ngIf="formControls['clientName'].dirty">
-      <p>Hi, {{ formControls["clientName"].value }}</p>
+      <p style="font-size: 18px">Hi, {{ formControls["clientName"].value }}</p>
     </div>
     <div *ngIf="formControls['projectName'].dirty">
+      <p>Updates for as on {{ date }} {{ month }}, {{ year }}</p>
+      <hr />
       <p>
-        Following are the updates for {{ formControls["projectName"].value }}
+        Following are the updates for {{ formControls["projectName"].value }} as
+        on {{ date }} {{ month }}, {{ year }}
       </p>
     </div>
-    <div *ngIf="formControls['taskData'].dirty">
-      <h5>Complete Task</h5>
-      <div *ngFor="let data of taskData.value; let i = index">
-        {{ taskData.value[i] }}
+    <div class="p-1" *ngIf="formControls['taskData'].dirty">
+      <h6 class="fw-bold"><u>List of completed tasks:</u></h6>
+      <div *ngFor="let data of taskData.value; let i = index" class="d-flex">
+        <h5 class="mx-3">{{ i + 1 }}.</h5>
+        {{ taskData.value[i] }} &nbsp; <b>[Done]</b>
+      </div>
+    </div>
+    <div class="p-1" *ngIf="formControls['progressData'].dirty">
+      <h6 class="fw-bold"><u>List of tasks in progress:</u></h6>
+      <div
+        *ngFor="let data of progressData.value; let i = index"
+        class="d-flex"
+      >
+        <h5 class="mx-3">{{ i + 1 }}.</h5>
+        {{ progressData.value[i] }}
+      </div>
+    </div>
+    <div class="p-1" *ngIf="formControls['pendingData'].dirty">
+      <h6 class="fw-bold"><u>List of pending tasks:</u></h6>
+      <div *ngFor="let data of pendingData.value; let i = index" class="d-flex">
+        <h5 class="mx-3">{{ i + 1 }}.</h5>
+        {{ pendingData.value[i] }}
+      </div>
+    </div>
+    <div class="p-1" *ngIf="formControls['queries'].dirty">
+      <h6 class="fw-bold"><u>Queries:</u></h6>
+      <div *ngFor="let data of queries.value; let i = index" class="d-flex">
+        <h5 class="mx-3">{{ i + 1 }}.</h5>
+        {{ queries.value[i] }}
+      </div>
+    </div>
+    <div class="p-1" *ngIf="formControls['notes'].dirty">
+      <h6 class="fw-bold"><u>Notes:</u></h6>
+      <div *ngFor="let data of notes.value; let i = index" class="d-flex">
+        <h5 class="mx-3">{{ i + 1 }}.</h5>
+        {{ notes.value[i] }}
+      </div>
+    </div>
+    <div class="fs-5" *ngIf="formControls['taskData'].dirty">
+      <p style="font-size: 18px">
+        Please check with the latest updates and let us know your thoughts for
+        the same.
+      </p>
+    </div>
+    <div class="fs-5 p-4" *ngIf="formControls['name'].dirty">
+      <div class="fs-5 p-2" *ngIf="formControls['name'].dirty">
+        Thanks,<br />
+        <b>{{ formControls["name"].value }}</b>
       </div>
     </div>
   </div>
