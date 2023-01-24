@@ -22,6 +22,7 @@ export class DemoFormarrayComponent implements OnInit {
   public queryError!: string;
   public noteError!: string;
   public isInvalid!: boolean;
+  public clicked: boolean = false;
   public monthList: string[] = [
     'January',
     'February',
@@ -135,5 +136,16 @@ export class DemoFormarrayComponent implements OnInit {
 
   formControl() {
     return this.fb.control('', [Validators.required]);
+  }
+
+  copyTextdata() {
+    const copyData = (document.getElementById('copyText') as HTMLElement)
+      .innerText;
+    navigator.clipboard.writeText(copyData);
+    this.clicked = true;
+  }
+
+  showText() {
+    this.clicked = false;
   }
 }

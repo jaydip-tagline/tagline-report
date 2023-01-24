@@ -1,2 +1,30 @@
-<app-demo-formarray></app-demo-formarray>
+<div style="border-bottom: 2px solid #da6122">
+  <img src="./../../assets/images/logo.png" />
+</div>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item waves-effect waves-light">
+    <a
+      class="nav-link active show"
+      id="home-tab"
+      data-toggle="tab"
+      [routerLink]="'home'"
+      role="tab"
+      aria-controls="home"
+      aria-selected="true"
+      >Daily Updates</a
+    >
+  </li>
+  <li class="nav-item waves-effect waves-light">
+    <a
+      class="nav-link"
+      id="profile-tab"
+      data-toggle="tab"
+      role="tab"
+      aria-controls="profile"
+      aria-selected="false"
+      >Request For Leave</a
+    >
+  </li>
+</ul>
+<!-- <app-demo-formarray></app-demo-formarray> -->
 <router-outlet></router-outlet>
