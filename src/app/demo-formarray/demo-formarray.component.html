@@ -242,7 +242,9 @@
 
     <hr *ngIf="formControls['projectName'].dirty" class="col-md-9" />
     <div *ngIf="formControls['clientName'].dirty">
-      <p style="font-size: 18px">Hi, {{ formControls["clientName"].value }}</p>
+      <p style="font-size: 18px">
+        <b>Hi, {{ formControls["clientName"].value }}</b>
+      </p>
     </div>
     <div *ngIf="formControls['projectName'].dirty">
       <p>
@@ -254,8 +256,16 @@
     <div class="p-1" *ngIf="formControls['taskData'].dirty">
       <h6 class="fw-bold"><u>List of completed tasks:</u></h6>
       <div *ngFor="let data of taskData.value; let i = index" class="d-flex">
-        <h5 class="mx-3">{{ i + 1 }}.</h5>
-        {{ taskData.value[i] }} &nbsp; <b>[Done]</b>
+        <ng-container
+          *ngIf="
+            taskData.controls[i].valid &&
+            taskData.dirty &&
+            taskData.controls[i].dirty
+          "
+        >
+          <h5 class="mx-3">{{ i + 1 }}.</h5>
+          {{ taskData.value[i] }} &nbsp; <b>[Done]</b>
+        </ng-container>
       </div>
     </div>
     <div class="p-1" *ngIf="formControls['progressData'].dirty">
@@ -264,32 +274,62 @@
         *ngFor="let data of progressData.value; let i = index"
         class="d-flex"
       >
-        <h5 class="mx-3">{{ i + 1 }}.</h5>
-        {{ progressData.value[i] }}
+        <ng-container
+          *ngIf="
+            progressData.controls[i].valid &&
+            progressData.dirty &&
+            progressData.controls[i].dirty
+          "
+        >
+          <h5 class="mx-3">{{ i + 1 }}.</h5>
+          {{ progressData.value[i] }}
+        </ng-container>
       </div>
     </div>
     <div class="p-1" *ngIf="formControls['pendingData'].dirty">
       <h6 class="fw-bold"><u>List of pending tasks:</u></h6>
       <div *ngFor="let data of pendingData.value; let i = index" class="d-flex">
-        <h5 class="mx-3">{{ i + 1 }}.</h5>
-        {{ pendingData.value[i] }}
+        <ng-container
+          *ngIf="
+            pendingData.controls[i].valid &&
+            pendingData.dirty &&
+            pendingData.controls[i].dirty
+          "
+        >
+          <h5 class="mx-3">{{ i + 1 }}.</h5>
+          {{ pendingData.value[i] }}
+        </ng-container>
       </div>
     </div>
     <div class="p-1" *ngIf="formControls['queries'].dirty">
       <h6 class="fw-bold"><u>Queries:</u></h6>
       <div *ngFor="let data of queries.value; let i = index" class="d-flex">
-        <h5 class="mx-3">{{ i + 1 }}.</h5>
-        {{ queries.value[i] }}
+        <ng-container
+          *ngIf="
+            queries.controls[i].valid &&
+            queries.dirty &&
+            queries.controls[i].dirty
+          "
+        >
+          <h5 class="mx-3">{{ i + 1 }}.</h5>
+          {{ queries.value[i] }}
+        </ng-container>
       </div>
     </div>
     <div class="p-1" *ngIf="formControls['notes'].dirty">
       <h6 class="fw-bold"><u>Notes:</u></h6>
       <div *ngFor="let data of notes.value; let i = index" class="d-flex">
-        <h5 class="mx-3">{{ i + 1 }}.</h5>
-        {{ notes.value[i] }}
+        <ng-container
+          *ngIf="
+            notes.controls[i].valid && notes.dirty && notes.controls[i].dirty
+          "
+        >
+          <h5 class="mx-3">{{ i + 1 }}.</h5>
+          {{ notes.value[i] }}
+        </ng-container>
       </div>
     </div>
-    <div class="fs-5" *ngIf="formControls['taskData'].dirty">
+    <div class="fs-5" *ngIf="formControls['taskData'].dirty && taskData.dirty">
       <p style="font-size: 18px">
         Please check with the latest updates and let us know your thoughts for
         the same.

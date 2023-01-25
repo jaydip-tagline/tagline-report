@@ -4,12 +4,16 @@ import { DemoFormarrayComponent } from './demo-formarray/demo-formarray.componen
 
 const routes: Routes = [
   {
+    path: '',
+    component: DemoFormarrayComponent,
+  },
+  {
     path: 'home',
     component: DemoFormarrayComponent,
   },
   {
     path: '**',
-    redirectTo: 'home',
+    redirectTo: '',
   },
 ];
 
