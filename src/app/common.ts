@@ -1,5 +1,5 @@
 export interface User {
-  id: string;
+  id: number;
   name: string;
   username: string;
   email: string;
@@ -7,10 +7,10 @@ export interface User {
     street: string;
     suite: string;
     city: string;
-    zipcode: number;
+    zipcode: string;
     geo: {
-      lat: number;
-      lng: number;
+      lat: string;
+      lng: string;
     };
   };
   phone: string;

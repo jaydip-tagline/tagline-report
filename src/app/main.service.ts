@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,17 +10,18 @@ export class MainService {
   constructor(private http: HttpClient) {}
 
   getUsers() {
-    return this.http.get('https://jsonplaceholder.typicode.com/users');
+    return this.http.get(`${environment.baseURL}`);
   }
-
-  deleteUsers(i: any): Observable<{}> {
-    const url = 'https://jsonplaceholder.typicode.com/users';
-    const deleteUrl = url + '/' + i;
-    return this.http.delete(deleteUrl);
+  deleteUsers(id: any): Observable<{}> {
+    return this.http.delete(`${environment.baseURL}/${id}`);
   }
-
-  public postUsers(user: any): Observable<any> {
-    const url = 'https://jsonplaceholder.typicode.com/users';
-    return this.http.post<any>(url, user);
+  postUsers(user: any): Observable<any> {
+    return this.http.post<any>(`${environment.baseURL}`, user);
+  }
+  putUsers(user: any): Observable<any> {
+    return this.http.put<any>(`${environment.baseURL}/${user.id}`, user);
+  }
+  patchUsers(user: any): Observable<any> {
+    return this.http.patch<any>(`${environment.baseURL}/${user.id}`, user);
   }
 }

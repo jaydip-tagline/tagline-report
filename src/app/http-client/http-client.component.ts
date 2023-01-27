@@ -10,46 +10,57 @@ import { MainService } from '../main.service';
 })
 export class HttpClientComponent implements OnInit {
   public users!: any;
-  public form!: FormGroup;
-  public formData: any;
+  public editIndex!: number;
+  public userForm!: FormGroup;
   public isUpdate: boolean = false;
   public userId!: number;
   constructor(private mainService: MainService, private fb: FormBuilder) {
-    this.form = this.fb.group({
+    this.userForm = this.fb.group({
       name: [null, Validators.required],
       phone: [null, Validators.required],
       email: [null, Validators.required],
     });
-    this.mainService.getUsers().subscribe((resp) => {
-      this.users = resp;
-    });
+    this.getUsersDetails();
   }
 
   ngOnInit(): void {}
 
   get formControls() {
-    return this.form.controls;
+    return this.userForm.controls;
   }
-
-  onSave() {
-    this.mainService.postUsers(this.form.value).subscribe((resp: any) => {
-      console.log(resp);
-      const data = {
-        id: this.users.length + 1,
-        ...this.form.value,
-      };
-      this.users.push(data);
+  getUsersDetails() {
+    this.mainService.getUsers().subscribe((resp) => {
+      this.users = resp;
     });
   }
+  onSubmit() {
+    if (this.userId) {
+      const data = (this.users[this.editIndex] = {
+        id: this.userId,
+        ...this.userForm.value,
+      });
+      this.mainService.putUsers(data).subscribe((resp: any) => {});
+    } else {
+      const data = {
+        id: this.users.length + 1,
+        ...this.userForm.value,
+      };
+      this.mainService.postUsers(data).subscribe((resp: any) => {
+        this.users.push(resp);
+      });
+    }
+    this.userForm.reset();
+  }
 
-  edit(data: any) {
-    this.form.patchValue(data);
+  edit(data: any, index: number) {
+    this.userForm.patchValue(data);
+    this.editIndex = index;
     this.userId = data.id;
     this.isUpdate = true;
   }
-  delete(i: number) {
-    this.mainService.deleteUsers(i).subscribe((resp: any) => {
-      this.users.splice(i, 1);
+  delete(index: number) {
+    this.mainService.deleteUsers(index).subscribe(() => {
+      this.users.splice(index, 1);
     });
   }
 }
