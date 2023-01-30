@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../common';
 import { MainService } from '../main.service';
 import { ToastrService } from 'ngx-toastr';
+import { Observable, Observer } from 'rxjs';
 
 @Component({
   selector: 'app-http-client',
@@ -15,6 +16,8 @@ export class HttpClientComponent implements OnInit {
   public userForm!: FormGroup;
   public isUpdate: boolean = false;
   public userId!: number;
+  public deletedId!: number;
+  public userDetails: any;
   public myModal = document.getElementById('myModal');
   public myInput = document.getElementById('myInput');
   constructor(
@@ -38,6 +41,12 @@ export class HttpClientComponent implements OnInit {
   getUsersDetails() {
     this.mainService.getUsers().subscribe((resp) => {
       this.users = resp;
+      let customObserve = Observable.create((observe: Observer<any>) => {
+        observe.next(this.users);
+      });
+      customObserve.subscribe((res: any) => {
+        this.userDetails = res;
+      });
     });
   }
   onSubmit() {
@@ -68,10 +77,13 @@ export class HttpClientComponent implements OnInit {
     this.userId = data.id;
     this.isUpdate = true;
   }
+  deletedIndex(index: number) {
+    this.deletedId = index;
+  }
   delete(index: number) {
-    this.mainService.deleteUsers(index).subscribe(() => {
-      this.users.splice(index, 1);
-      this.toastr.success('Your Data is Deleted Successfully!', 'Deleted!');
+    this.mainService.deleteUsers(this.deletedId).subscribe(() => {
+      this.users.splice(this.deletedId, 1);
+      this.toastr.success('Your Data is Successfully Deleted!', 'Deleted!');
     });
   }
 }

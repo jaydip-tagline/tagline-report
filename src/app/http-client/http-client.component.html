@@ -2,7 +2,10 @@
   <div class="box pt-2">
     <h1 class="text-center py-2 fw-bold my-5">Registration Form</h1>
   </div>
-  <div class="col-5 bg-white border py-4 px-5">
+  <div class="col-5 bg-white border shadow py-4 px-5">
+    <div class="box pt-2">
+      <h1 class="text-center py-2 fw-bold">User Details</h1>
+    </div>
     <form [formGroup]="userForm">
       <div class="form-group my-2">
         <label for="exampleInputEmail1">Name</label>
@@ -47,6 +50,7 @@
           placeholder="Enter your email"
           name="email"
           formControlName="email"
+          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,4}$"
         />
         <span
           *ngIf="userForm.controls['email'].touched && userForm.controls['email'].errors?.['required']"
@@ -54,18 +58,21 @@
         >
           Please enter your Email Address!!
         </span>
+        <span
+          *ngIf="userForm.controls['email'].invalid && userForm.controls['email'].errors?.['pattern']"
+          class="text-danger"
+          >Email Address is invalid!!</span
+        >
       </div>
       <div class="row">
-        <div class="col-2">
-          <button
-            type="submit"
-            class="btn btn-primary my-2"
-            (click)="onSubmit()"
-            [disabled]="!userForm.valid"
-          >
-            {{ isUpdate ? "Update" : "Submit" }}
-          </button>
-        </div>
+        <button
+          type="submit"
+          class="btn btn-dark my-2"
+          (click)="onSubmit()"
+          [disabled]="!userForm.valid"
+        >
+          {{ isUpdate ? "Update" : "Submit" }}
+        </button>
       </div>
     </form>
   </div>
@@ -80,7 +87,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of users; let i = index">
+        <tr *ngFor="let data of this.userDetails; let i = index">
           <td>{{ data.name }}</td>
           <td>{{ data.phone }}</td>
           <td>{{ data.email }}</td>
@@ -98,6 +105,7 @@
               data-bs-toggle="modal"
               data-bs-target="#exampleModal"
               style="margin-left: 20px"
+              (click)="deletedIndex(i)"
             >
               Delete
             </button>
