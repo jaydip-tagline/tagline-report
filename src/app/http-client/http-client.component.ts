@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../common';
 import { MainService } from '../main.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-http-client',
@@ -14,7 +15,13 @@ export class HttpClientComponent implements OnInit {
   public userForm!: FormGroup;
   public isUpdate: boolean = false;
   public userId!: number;
-  constructor(private mainService: MainService, private fb: FormBuilder) {
+  public myModal = document.getElementById('myModal');
+  public myInput = document.getElementById('myInput');
+  constructor(
+    private mainService: MainService,
+    private fb: FormBuilder,
+    private toastr: ToastrService
+  ) {
     this.userForm = this.fb.group({
       name: [null, Validators.required],
       phone: [null, Validators.required],
@@ -40,6 +47,7 @@ export class HttpClientComponent implements OnInit {
         ...this.userForm.value,
       });
       this.mainService.putUsers(data).subscribe((resp: any) => {});
+      this.toastr.success('Your Data is Updated!', 'Updated');
     } else {
       const data = {
         id: this.users.length + 1,
@@ -47,6 +55,7 @@ export class HttpClientComponent implements OnInit {
       };
       this.mainService.postUsers(data).subscribe((resp: any) => {
         this.users.push(resp);
+        this.toastr.success('Your Data is Submitted!', 'Submitted');
       });
     }
     this.userForm.reset();
@@ -54,6 +63,7 @@ export class HttpClientComponent implements OnInit {
 
   edit(data: any, index: number) {
     this.userForm.patchValue(data);
+    this.toastr.info("You're in Edit Mode!", 'Editted!');
     this.editIndex = index;
     this.userId = data.id;
     this.isUpdate = true;
@@ -61,6 +71,7 @@ export class HttpClientComponent implements OnInit {
   delete(index: number) {
     this.mainService.deleteUsers(index).subscribe(() => {
       this.users.splice(index, 1);
+      this.toastr.success('Your Data is Deleted Successfully!', 'Deleted!');
     });
   }
 }
