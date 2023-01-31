@@ -3,11 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DemoFormarrayComponent } from './demo-formarray/demo-formarray.component';
-import { HttpClientComponent } from './http-client/http-client.component';
-import { HttpClientModule } from '@angular/common/http';
+import { DemoFormarrayComponent } from './features/report/components/demo-formarray/demo-formarray.component';
+import { HttpClientComponent } from './features/report/components/http-client/http-client.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { AuthInterceptor } from './shared/auth.interceptor';
 
 @NgModule({
   declarations: [AppComponent, DemoFormarrayComponent, HttpClientComponent],
@@ -23,7 +24,9 @@ import { ToastrModule } from 'ngx-toastr';
       progressBar: true,
     }),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

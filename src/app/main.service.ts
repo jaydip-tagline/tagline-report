@@ -25,4 +25,7 @@ export class MainService {
   patchUsers(user: any): Observable<any> {
     return this.http.patch<any>(`${environment.baseURL}/${user.id}`, user);
   }
+  get accessToken() {
+    return localStorage.getItem('token') || null;
+  }
 }

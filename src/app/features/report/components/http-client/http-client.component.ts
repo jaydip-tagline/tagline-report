@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from '../common';
-import { MainService } from '../main.service';
+import { User } from '../../../../common';
+import { MainService } from '../../../../main.service';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Observer } from 'rxjs';
 
@@ -18,8 +18,6 @@ export class HttpClientComponent implements OnInit {
   public userId!: number;
   public deletedId!: number;
   public userDetails: any;
-  public myModal = document.getElementById('myModal');
-  public myInput = document.getElementById('myInput');
   constructor(
     private mainService: MainService,
     private fb: FormBuilder,
