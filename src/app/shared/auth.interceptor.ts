@@ -26,20 +26,6 @@ export class AuthInterceptor implements HttpInterceptor {
     request = request.clone({
       setHeaders: { Token: '12345678986556156156155615614' },
     });
-
-    // request = request.clone({
-    //   headers: request.headers.append('interceptor data', 'intercepted'),
-    //   setHeaders: { 'access-token': `${this.mainService.accessToken}` },
-    // });
-    // return next.handle(request);
-    // return next.handle(request).pipe(
-    //   tap((event) => {
-    //     if (event.type == HttpEventType.Response) {
-    //       console.log('Responce received');
-    //       console.log(event.body);
-    //     }
-    //   })
-    // );
     return next.handle(request).pipe(
       map((res) => {
         console.log('Passed through the interceptor in response');
