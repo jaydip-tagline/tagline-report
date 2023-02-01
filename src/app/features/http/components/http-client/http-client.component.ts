@@ -4,6 +4,8 @@ import { User } from '../../../../common';
 import { MainService } from '../../../../main.service';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Observer } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-http-client',
@@ -21,7 +23,9 @@ export class HttpClientComponent implements OnInit {
   constructor(
     private mainService: MainService,
     private fb: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private activatedRoute: ActivatedRoute,
+    private spinner: NgxSpinnerService
   ) {
     this.userForm = this.fb.group({
       name: [null, Validators.required],
@@ -31,7 +35,9 @@ export class HttpClientComponent implements OnInit {
     this.getUsersDetails();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userDetails = this.activatedRoute.snapshot.data['usersdetails'];
+  }
 
   get formControls() {
     return this.userForm.controls;
@@ -54,7 +60,7 @@ export class HttpClientComponent implements OnInit {
         ...this.userForm.value,
       });
       this.mainService.putUsers(data).subscribe((resp: any) => {});
-      this.toastr.success('Your Data is Updated!', 'Updated');
+      this.toastr.success('Your Data Is Updated!', 'Updated');
     } else {
       const data = {
         id: this.users.length + 1,
@@ -62,7 +68,7 @@ export class HttpClientComponent implements OnInit {
       };
       this.mainService.postUsers(data).subscribe((resp: any) => {
         this.users.push(resp);
-        this.toastr.success('Your Data is Submitted!', 'Submitted');
+        this.toastr.success('Your Data Is Submitted!', 'Submitted');
       });
     }
     this.userForm.reset();
@@ -70,7 +76,7 @@ export class HttpClientComponent implements OnInit {
 
   edit(data: any, index: number) {
     this.userForm.patchValue(data);
-    this.toastr.info("You're in Edit Mode!", 'Editted!');
+    this.toastr.info("You're In Edit Mode!", 'Editted!');
     this.editIndex = index;
     this.userId = data.id;
     this.isUpdate = true;
@@ -81,7 +87,7 @@ export class HttpClientComponent implements OnInit {
   delete(index: number) {
     this.mainService.deleteUsers(this.deletedId).subscribe(() => {
       this.users.splice(this.deletedId, 1);
-      this.toastr.success('Your Data is Successfully Deleted!', 'Deleted!');
+      this.toastr.success('Your Data Is Successfully Deleted!', 'Deleted!');
     });
   }
 }

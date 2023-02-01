@@ -28,17 +28,14 @@ export class AuthInterceptor implements HttpInterceptor {
     });
     return next.handle(request).pipe(
       map((res) => {
-        console.log('Passed through the interceptor in response');
         return res;
       }),
       catchError((error: HttpErrorResponse) => {
         let errorMsg = '';
         if (error.error instanceof ErrorEvent) {
-          console.log('This is client side error');
           this.toastr.error('This is client side error!', 'Error');
           errorMsg = `Error: ${error.error.message}`;
         } else {
-          console.log('This is server side error');
           this.toastr.error('This is server side error!', 'Error');
           errorMsg = `Error Code: ${error.status},  Message: ${error.message}`;
         }

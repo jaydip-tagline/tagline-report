@@ -9,6 +9,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthInterceptor } from './shared/interceptor/auth.interceptor';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [AppComponent, DemoFormarrayComponent, HttpClientComponent],
@@ -18,6 +19,7 @@ import { AuthInterceptor } from './shared/interceptor/auth.interceptor';
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    NgxSpinnerModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       closeButton: true,
