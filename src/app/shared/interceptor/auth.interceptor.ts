@@ -9,8 +9,8 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { MainService } from '../main.service';
 import { ToastrService } from 'ngx-toastr';
+import { MainService } from 'src/app/main.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

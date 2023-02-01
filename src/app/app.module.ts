@@ -4,11 +4,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DemoFormarrayComponent } from './features/report/components/demo-formarray/demo-formarray.component';
-import { HttpClientComponent } from './features/report/components/http-client/http-client.component';
+import { HttpClientComponent } from './features/http/components/http-client/http-client.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-import { AuthInterceptor } from './shared/auth.interceptor';
+import { AuthInterceptor } from './shared/interceptor/auth.interceptor';
 
 @NgModule({
   declarations: [AppComponent, DemoFormarrayComponent, HttpClientComponent],
