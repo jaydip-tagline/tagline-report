@@ -13,6 +13,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./http-client.component.scss'],
 })
 export class HttpClientComponent implements OnInit {
+  dateVal = new Date();
   public users!: any;
   public editIndex!: number;
   public userForm!: FormGroup;
